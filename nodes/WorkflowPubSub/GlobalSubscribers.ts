@@ -3,19 +3,22 @@ import { PubSubEvent, Subscriber } from './types';
 
 const subscribers: Subscriber[] = [];
 
-export function addSubscriber(context: ITriggerFunctions, eventFilter: string) {
+export function addSubscriber(context: ITriggerFunctions, eventName: string) {
+	const regexp = eventName.match(/^\/(.*?)\/([gimy]*)$/);
+	const eventFilter = regexp ? new RegExp(regexp[1], regexp[2]) : eventName;
 	const { id: nodeId } = context.getNode();
-	const eventFilterRegexp = new RegExp(`^${eventFilter}$`);
-	subscribers.push({
+	const subscriber = {
 		workflowId: context.getWorkflow().id,
 		nodeId: nodeId,
-		eventFilter,
+		eventFilter: eventName,
 		triggerCallback: (event: PubSubEvent) => {
-			if (eventFilterRegexp.test(event.name)) {
+			if (eventFilter instanceof RegExp ? eventFilter.test(event.name) : event.name === eventFilter) {
 				context.emit(event.data);
 			}
 		},
-	});
+	};
+	subscribers.push(subscriber);
+	return subscriber;
 }
 
 export function removeSubscriber(context: ITriggerFunctions) {

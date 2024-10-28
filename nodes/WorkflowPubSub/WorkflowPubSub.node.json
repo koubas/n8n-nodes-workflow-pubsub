@@ -1,0 +1,17 @@
+{
+	"node": "n8n-nodes-workflow-pubsub.workflowPubSubTrigger",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Core Nodes"],
+	"resources": {
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/koubas/n8n-nodes-workflow-pubsub/blob/main/README.md"
+			}
+		],
+		"generic": []
+	},
+	"subcategories": {
+		"Core Nodes": ["Flow"]
+	}
+}

@@ -1,5 +1,5 @@
 {
-  "name": "n8n-pubsub",
+  "name": "n8n-nodes-workflow-pubsub",
   "version": "0.1.0",
   "description": "Workflow PubSub",
   "keywords": [
@@ -9,13 +9,16 @@
   "scripts": {
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
+    "test": "jest",
     "format": "prettier nodes --write",
     "lint": "eslint nodes package.json",
     "lintfix": "eslint nodes package.json --fix",
     "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes package.json"
   },
-  "author": "Jakub Husák",
-  "email": "husak.j@gmail.com",
+  "author": {
+    "name": "Jakub Husák",
+    "email": "husak.j@gmail.com"
+  },
   "license": "MIT",
   "files": [
     "dist"
@@ -23,12 +26,14 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "nodes": [
-      "dist/nodes/PubSub/PubSub.node.js",
-      "dist/nodes/PubSub/PubSubTrigger.node.js"
+      "dist/nodes/WorkflowPubSub/WorkflowPubSub.node.js",
+      "dist/nodes/WorkflowPubSub/WorkflowPubSubTrigger.node.js"
     ]
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
+    "@typescript-eslint/parser": "^8.12.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "gulp": "^5.0.0",
     "n8n-core": "^1.14.1",
     "n8n-workflow": "^1.48.0",

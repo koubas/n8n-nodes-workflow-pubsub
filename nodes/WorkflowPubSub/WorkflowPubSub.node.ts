@@ -1,27 +1,21 @@
-import {
-	INodeType,
-	NodeConnectionType,
-	INodeTypeDescription,
-	IExecuteFunctions,
-	INodeExecutionData,
-} from 'n8n-workflow';
+import { INodeType, INodeTypeDescription, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { getSubscribers } from './GlobalSubscribers';
 
-export class PubSub implements INodeType {
+export class WorkflowPubSub implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'PubSub',
-		name: 'pubSub',
+		displayName: 'Workflow PubSub',
+		name: 'workflowPubSub',
+		subtitle:
+			'={{ $parameter["action"] === "publish" ? `Publish event: ${$parameter["event_name"]}` : $parameter["action"] }}',
 		group: ['transform'],
 		version: 1,
-		description:
-			'Helper for subscribing to events sent from other n8n workflows. Used for designing modular, microservice-like workflows.',
+		description: 'Publish an event that other workflows can subscribe to using `Workflow PubSub Trigger`',
 		defaults: {
-			name: 'PubSub Trigger',
-			color: '#ff6d5a',
+			name: 'Workflow PubSub',
 		},
 
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: ['main'],
+		outputs: ['main'],
 		properties: [
 			{
 				displayName: 'Action',
@@ -34,16 +28,19 @@ export class PubSub implements INodeType {
 					{
 						name: 'Publish',
 						value: 'publish',
+						// eslint-disable-next-line n8n-nodes-base/node-param-operation-option-action-miscased
+						action: 'Publish an event that other workflows can subscribe to using `Workflow PubSub Trigger`.',
 					},
 					{
 						name: 'List Subscribers',
 						value: 'list_subscribers',
+						action: 'List event filters other workflows have subscribed to',
 					},
 				],
 			},
 
 			{
-				displayName: 'Event name',
+				displayName: 'Event Name',
 				displayOptions: {
 					show: {
 						action: ['publish'],
