@@ -1,4 +1,4 @@
-import { INodeType, INodeTypeDescription, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { INodeType, INodeTypeDescription, IExecuteFunctions, INodeExecutionData, ApplicationError } from 'n8n-workflow';
 import { getSubscribers } from './GlobalSubscribers';
 
 export class WorkflowPubSub implements INodeType {
@@ -14,7 +14,6 @@ export class WorkflowPubSub implements INodeType {
 		defaults: {
 			name: 'Workflow PubSub',
 		},
-
 		inputs: ['main'],
 		outputs: ['main'],
 		properties: [
@@ -39,7 +38,6 @@ export class WorkflowPubSub implements INodeType {
 					},
 				],
 			},
-
 			{
 				displayName: 'Event Name',
 				displayOptions: {
@@ -52,19 +50,54 @@ export class WorkflowPubSub implements INodeType {
 				required: true,
 				default: '',
 			},
+			{
+				displayName: 'Mode',
+				name: 'mode',
+				type: 'options',
+				noDataExpression: true,
+				options: [
+					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+						name: 'Run once with all items',
+						value: 'once',
+						description:
+							'Pass all items as single event. Event name, if an expression is used, will be determined by the first item.',
+					},
+					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+						name: 'Run once for each item',
+						value: 'each',
+						description: 'Publish an event individually for each item',
+					},
+				],
+				default: 'once',
+			},
 		],
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const action = this.getNodeParameter('action', 0);
+		const mode = this.getNodeParameter('mode', 0) as string;
 		if (action === 'publish') {
 			const input = this.getInputData();
-			for (let i = 0; i < input.length; i++) {
-				const eventName = this.getNodeParameter('event_name', i) as string;
+			if (mode === 'each') {
+				for (let i = 0; i < input.length; i++) {
+					const eventName = this.getNodeParameter('event_name', i) as string;
+					getSubscribers().forEach((s) => {
+						s.triggerCallback({
+							name: eventName,
+							data: [[input[i]]],
+							publisherNodeId: '',
+							publisherWorkflowId: '',
+						});
+					});
+				}
+			} else {
+				const eventName = this.getNodeParameter('event_name', 0) as string;
 				getSubscribers().forEach((s) => {
 					s.triggerCallback({
 						name: eventName,
-						data: [[input[i]]],
+						data: [input],
 						publisherNodeId: '',
 						publisherWorkflowId: '',
 					});
@@ -79,6 +112,6 @@ export class WorkflowPubSub implements INodeType {
 				})),
 			];
 		}
-		return [];
+		throw new ApplicationError('Unknown action');
 	}
 }
