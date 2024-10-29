@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-workflow-pubsub",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Workflow PubSub",
   "keywords": [
     "n8n-community-node-package"
