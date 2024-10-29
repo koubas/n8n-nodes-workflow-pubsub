@@ -19,6 +19,10 @@
     "name": "Jakub Husák",
     "email": "husak.j@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koubas/n8n-nodes-workflow-pubsub"
+  },
   "license": "MIT",
   "files": [
     "dist"
