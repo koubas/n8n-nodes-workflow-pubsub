@@ -7,6 +7,7 @@ export class WorkflowPubSubTrigger implements INodeType {
 		subtitle: '={{ `Subscribe to: ${$parameter["event_name"]}` }}',
 		name: 'workflowPubSubTrigger',
 		group: ['trigger'],
+		icon: 'file:workflow-pubsub.svg',
 		version: 1,
 		description:
 			'Triggers the workflow on events you subscribe it to, published by Workflow PubSub node in another workflow.',

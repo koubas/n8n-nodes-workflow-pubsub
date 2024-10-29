@@ -8,6 +8,7 @@ export class WorkflowPubSub implements INodeType {
 		subtitle:
 			'={{ $parameter["action"] === "publish" ? `Publish event: ${$parameter["event_name"]}` : $parameter["action"] }}',
 		group: ['transform'],
+		icon: 'file:workflow-pubsub.svg',
 		version: 1,
 		description: 'Publish an event that other workflows can subscribe to using `Workflow PubSub Trigger`',
 		defaults: {
