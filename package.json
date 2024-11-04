@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-workflow-pubsub",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Workflow PubSub",
   "keywords": [
     "n8n-community-node-package"
@@ -39,7 +39,6 @@
     "@typescript-eslint/parser": "^8.12.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "gulp": "^5.0.0",
-    "n8n-core": "^1.14.1",
     "n8n-workflow": "^1.48.0",
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
